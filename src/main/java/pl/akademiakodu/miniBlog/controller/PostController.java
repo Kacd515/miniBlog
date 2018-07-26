@@ -9,6 +9,10 @@ import pl.akademiakodu.miniBlog.dao.CommentDao;
 import pl.akademiakodu.miniBlog.dao.PostDao;
 import pl.akademiakodu.miniBlog.model.Comment;
 import pl.akademiakodu.miniBlog.model.Post;
+import pl.akademiakodu.miniBlog.model.Tag;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 public class PostController {
@@ -27,6 +31,14 @@ public class PostController {
     @PostMapping("/posts/add")
     public String createPost(@ModelAttribute
                                      Post post, ModelMap modelMap){
+        String tagList = post.getTagList();
+        String[] tags = tagList.split(",");
+
+        Set<Tag> tagSet = new HashSet<>();
+        for (String tagName: tags) {
+            tagSet.add(new Tag(tagName));
+        }
+        post.setTags(tagSet);
         postDao.save(post);
         return "redirect:/posts/all";
     }

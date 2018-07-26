@@ -2,12 +2,34 @@ package pl.akademiakodu.miniBlog.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Post {
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private Set<Tag> tags = new HashSet<>();
 
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
+    @Transient
+    private String tagList;
+
+    public String getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(String tagList) {
+        this.tagList = tagList;
+    }
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
