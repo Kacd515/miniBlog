@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.akademiakodu.miniBlog.dao.CommentDao;
 import pl.akademiakodu.miniBlog.dao.PostDao;
 import pl.akademiakodu.miniBlog.model.Comment;
@@ -43,11 +44,13 @@ public class PostController {
     }
 
 
-    @ResponseBody
     @PostMapping("/posts/addComment")
-    public String addComment(@ModelAttribute Comment comment){
+    public String addComment(@ModelAttribute Comment comment
+    , RedirectAttributes redirectAttributes){
         commentDao.save(comment);
-        return "success";
+        // redirectAttributes odpownik ModelMap dla Redirect
+        redirectAttributes.addFlashAttribute("message","Pomyślnie Dodano komentarz");
+        return "redirect:/posts/"+comment.getPost().getId();
     }
 
 }
